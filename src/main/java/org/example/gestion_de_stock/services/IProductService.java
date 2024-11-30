@@ -5,7 +5,7 @@ import org.example.gestion_de_stock.entities.Product;
 import java.util.List;
 import java.util.Optional;
 
-public interface ProductService {
+public interface IProductService {
 
  Product saveProduct(Product product) ;
 
