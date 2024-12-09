@@ -61,4 +61,5 @@ public class UserServiceImpl implements IUserService {
         return userRepository.findByUsernameAndPassword(username, password)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid username or password."));
     }
+
 }
