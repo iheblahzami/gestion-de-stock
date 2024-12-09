@@ -11,4 +11,8 @@ public interface IStockMovementService {
     StockMovement updateStockMovement(Long id, StockMovement updatedMovement);
     void deleteStockMovement(Long id);
     void addStock(Long productId, Long warehouseId, int quantity);
+     void removeStock(Long productId, Long warehouseId, int quantity);
+    List<StockMovement> getMovementsForProduct(Long productId);
+    List<StockMovement> getMovementsForWarehouse(Long warehouseId);
+    int getStockBalance(Long productId, Long warehouseId);
 }
