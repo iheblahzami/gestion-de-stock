@@ -1,55 +1,77 @@
 package org.example.gestion_de_stock.controllers;
 
 import org.example.gestion_de_stock.entities.Product;
-import org.example.gestion_de_stock.services.ProductServiceImpl;
+import org.example.gestion_de_stock.services.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
+
+
+import org.springframework.http.ResponseEntity;
 
 @RestController
 @RequestMapping("/api/products")
 public class ProductController {
 
     @Autowired
-    private ProductServiceImpl productService;
+    private IProductService productService;
 
+    // Create or update a product
     @PostMapping
-    public Product addProduct(@RequestBody Product product) {
-        return productService.saveProduct(product);
+    public ResponseEntity<Product> saveProduct(@RequestBody Product product) {
+        Product savedProduct = productService.saveProduct(product);
+        return ResponseEntity.ok(savedProduct);
     }
 
-    @PutMapping
-    public Product updateProduct(@RequestBody Product product) {
-        return productService.saveProduct(product);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteProduct(@PathVariable Long id) {
-        productService.deleteProductById(id);
-    }
-
-    @GetMapping
-    public List<Product> getAllProducts() {
-        return productService.getAllProducts();
-    }
-
+    // Retrieve a product by ID
     @GetMapping("/{id}")
-    public Optional<Product> getProductById(@PathVariable Long id) {
-        return productService.getProductById(id);
+    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
+        return productService.getProductById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
+    // Retrieve all products
     @GetMapping
-    public List<Product> getProductByCategoryId(Long categoryId) {
-        return productService.findByCategoryId(categoryId);
+    public ResponseEntity<List<Product>> getAllProducts() {
+        List<Product> products = productService.getAllProducts();
+        return ResponseEntity.ok(products);
     }
-    @GetMapping
-    public List<Product> getProductBySupplierId(Long supplierId) {
-        return productService.findBySupplierId(supplierId);
-    }
-    @GetMapping
-    public List<Product> getProductByWarehouseId(Long warehouseId) {
-        return productService.findByWarehouseId(warehouseId);}
 
+    // Delete a product by ID
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProductById(@PathVariable Long id) {
+        productService.deleteProductById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    // Find products by name
+    @GetMapping("/search")
+    public ResponseEntity<List<Product>> getProductsByName(@RequestParam String name) {
+        List<Product> products = productService.getProductsByName(name);
+        return ResponseEntity.ok(products);
+    }
+
+    // Find products by category
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<List<Product>> findByCategoryId(@PathVariable Long categoryId) {
+        List<Product> products = productService.findByCategoryId(categoryId);
+        return ResponseEntity.ok(products);
+    }
+
+    // Find products by supplier
+    @GetMapping("/supplier/{supplierId}")
+    public ResponseEntity<List<Product>> findBySupplierId(@PathVariable Long supplierId) {
+        List<Product> products = productService.findBySupplierId(supplierId);
+        return ResponseEntity.ok(products);
+    }
+
+    // Find products by warehouse
+    @GetMapping("/warehouse/{warehouseId}")
+    public ResponseEntity<List<Product>> findByWarehouseId(@PathVariable Long warehouseId) {
+        List<Product> products = productService.findByWarehouseId(warehouseId);
+        return ResponseEntity.ok(products);
+    }
 }
+
