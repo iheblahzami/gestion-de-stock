@@ -17,5 +17,5 @@ public interface IWarehouseService {
     int getProductStockInWarehouse(Long warehouseId, Long productId);
     List<Warehouse> getWarehousesWithLowStock(int threshold);
     List<Warehouse> searchWarehouses(String keyword);
-
+     List<Product> getProductsInWarehouse(Long warehouseId);
 }

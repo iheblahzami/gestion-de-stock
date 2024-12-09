@@ -45,6 +45,7 @@ public class WarehouseServiceImpl implements IWarehouseService{
     public void deleteWarehouse(Long id) {
         warehouseRepository.deleteById(id);
     }
+    // Get all products in a specific warehouse
     public List<Product> getProductsInWarehouse(Long warehouseId) {
         Warehouse warehouse = getWarehouseById(warehouseId);
         return warehouse.getProducts();
