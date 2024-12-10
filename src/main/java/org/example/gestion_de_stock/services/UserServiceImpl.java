@@ -2,13 +2,18 @@ package org.example.gestion_de_stock.services;
 
 import org.example.gestion_de_stock.entities.User;
 import org.example.gestion_de_stock.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class UserServiceImpl implements IUserService {
+@Autowired
     private UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     // Create or register a new user
     public User createUser(User user) {
@@ -18,6 +23,8 @@ public class UserServiceImpl implements IUserService {
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
             throw new IllegalArgumentException("Email already exists: " + user.getEmail());
         }
+        // Encrypt the password
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
@@ -58,8 +65,11 @@ public class UserServiceImpl implements IUserService {
 
     // Authenticate a user (example: login functionality)
     public User authenticateUser(String username, String password) {
-        return userRepository.findByUsernameAndPassword(username, password)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid username or password."));
-    }
+        User user = userRepository.findByUsername(username)
+           .orElseThrow(() -> new IllegalArgumentException("Invalid username or password."));
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new IllegalArgumentException("Invalid username or password.");
+        }
+return  user ;}
 
 }

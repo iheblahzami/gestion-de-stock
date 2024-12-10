@@ -30,15 +30,7 @@ public class User implements UserDetails {
         return Collections.singletonList(() -> "ROLE_" + role.name());
     }
 
-    @Override
-    public String getPassword() {
-        return password;
-    }
 
-    @Override
-    public String getUsername() {
-        return username;
-    }
 
     @Override
     public boolean isAccountNonExpired() {
@@ -64,4 +56,5 @@ public class User implements UserDetails {
         ADMIN,
         OPERATOR
     }
+
 }

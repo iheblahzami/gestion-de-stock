@@ -1,7 +1,9 @@
 package org.example.gestion_de_stock.controllers;
 
+import org.example.gestion_de_stock.entities.AuthenticationResponse;
 import org.example.gestion_de_stock.entities.User;
 import org.example.gestion_de_stock.services.IUserService;
+import org.example.gestion_de_stock.services.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +16,8 @@ public class UserController {
 
         @Autowired
         private IUserService userService;
+        @Autowired
+        private JwtService jwtService;
 
         // Create or register a new user
         @PostMapping
@@ -59,8 +63,15 @@ public class UserController {
 
         // Authenticate a user (example: login functionality)
         @PostMapping("/authenticate")
-        public ResponseEntity<User> authenticateUser(@RequestParam String username, @RequestParam String password) {
+        public ResponseEntity<?> authenticateUser(@RequestParam String username, @RequestParam String password) {
             User authenticatedUser = userService.authenticateUser(username, password);
-            return ResponseEntity.ok(authenticatedUser);
+
+            // Generate a JWT token for the authenticated user
+            String token = jwtService.generateToken(authenticatedUser);
+
+            // Return the token instead of the user object
+            return ResponseEntity.ok(new AuthenticationResponse(token));
         }
+
+
 }
