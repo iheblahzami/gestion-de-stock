@@ -3,6 +3,8 @@ package org.example.gestion_de_stock.services;
 import org.example.gestion_de_stock.entities.User;
 import org.example.gestion_de_stock.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +29,10 @@ public class UserServiceImpl implements IUserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
+
+
+
+
 
     // Retrieve all users
     public List<User> getAllUsers() {
@@ -66,10 +72,14 @@ public class UserServiceImpl implements IUserService {
     // Authenticate a user (example: login functionality)
     public User authenticateUser(String username, String password) {
         User user = userRepository.findByUsername(username)
-           .orElseThrow(() -> new IllegalArgumentException("Invalid username or password."));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
+
+        // Verify the password
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new IllegalArgumentException("Invalid username or password.");
+            throw new BadCredentialsException("Invalid credentials");
         }
-return  user ;}
+
+        return user;
+    }
 
 }
