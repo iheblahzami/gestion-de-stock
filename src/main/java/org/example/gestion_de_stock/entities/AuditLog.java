@@ -2,6 +2,7 @@ package org.example.gestion_de_stock.entities;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.example.gestion_de_stock.security.User;
 
 import java.time.LocalDateTime;
 

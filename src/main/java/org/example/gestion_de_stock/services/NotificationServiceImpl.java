@@ -1,9 +1,9 @@
 package org.example.gestion_de_stock.services;
 
 import org.example.gestion_de_stock.entities.Notification;
-import org.example.gestion_de_stock.entities.User;
+import org.example.gestion_de_stock.security.User;
 import org.example.gestion_de_stock.repositories.NotificationRepository;
-import org.example.gestion_de_stock.repositories.UserRepository;
+import org.example.gestion_de_stock.security.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;

@@ -1,55 +1,71 @@
-package org.example.gestion_de_stock.entities;
+package org.example.gestion_de_stock.security;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
+
 
 @Entity
 @Getter
 @Setter
+@Accessors(chain = true)
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String username;
+    private String fullName;
     private String password;
     private String email;
 
     @Enumerated(EnumType.STRING)
     private Role role; // ADMIN or OPERATOR
 
-    // Implement UserDetails methods
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // Convert role to GrantedAuthority
         return Collections.singletonList(() -> "ROLE_" + role.name());
     }
+    @CreationTimestamp
+    @Column(updatable = false, name = "created_at")
+    private Date createdAt;
 
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private Date updatedAt;
 
 
     @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
     public boolean isAccountNonExpired() {
-        return true; // Implement according to your application's requirements
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true; // Implement according to your application's requirements
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true; // Implement according to your application's requirements
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return true; // Implement according to your application's requirements
+        return true;
     }
 
     public enum Role {

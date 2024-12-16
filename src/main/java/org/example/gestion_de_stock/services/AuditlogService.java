@@ -1,9 +1,7 @@
 package org.example.gestion_de_stock.services;
 
 import org.example.gestion_de_stock.entities.AuditLog;
-import org.example.gestion_de_stock.entities.User;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface AuditlogService {

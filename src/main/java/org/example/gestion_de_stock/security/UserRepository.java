@@ -1,6 +1,5 @@
-package org.example.gestion_de_stock.repositories;
+package org.example.gestion_de_stock.security;
 
-import org.example.gestion_de_stock.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

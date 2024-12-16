@@ -6,6 +6,7 @@ import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
 import jakarta.persistence.*;
+import org.example.gestion_de_stock.security.User;
 
 import java.time.LocalDateTime;
 
