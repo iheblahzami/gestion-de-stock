@@ -1,13 +1,19 @@
 package org.example.gestion_de_stock.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+@RequestMapping("/auth")
+@RestController
 public class AuthenticationController {
-    private final JwtService jwtService;
-
-    private final AuthenticationService authenticationService;
+    @Autowired
+    private  JwtService jwtService;
+   @Autowired
+    private  AuthenticationService authenticationService;
 
     public AuthenticationController(JwtService jwtService, AuthenticationService authenticationService) {
         this.jwtService = jwtService;
@@ -29,7 +35,8 @@ public class AuthenticationController {
 
         LoginResponse loginResponse = new LoginResponse()
                 .setToken(jwtToken)
-                .setExpiresIn(jwtService.getExpirationTime());
+                .setExpiresIn(jwtService.getExpirationTime())
+                .setRole(authenticatedUser.getRole()); // Include the user's role
 
         return ResponseEntity.ok(loginResponse);
     }

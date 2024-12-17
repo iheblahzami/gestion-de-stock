@@ -1,6 +1,7 @@
 package org.example.gestion_de_stock.security;
 
 import jakarta.persistence.*;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -27,7 +28,13 @@ public class User implements UserDetails {
     private String email;
 
     @Enumerated(EnumType.STRING)
-    private Role role; // ADMIN or OPERATOR
+    private Role role;
+
+
+    public enum Role {
+        ADMIN,
+        OPERATOR
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -68,9 +75,6 @@ public class User implements UserDetails {
         return true;
     }
 
-    public enum Role {
-        ADMIN,
-        OPERATOR
-    }
+
 
 }

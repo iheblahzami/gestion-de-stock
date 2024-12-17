@@ -3,6 +3,8 @@ package org.example.gestion_de_stock.security;
 import lombok.Getter;
 import lombok.Setter;
 
+
+
 @Getter
 @Setter
 public class RegisterUserDto {
@@ -12,4 +14,6 @@ public class RegisterUserDto {
     private String password;
 
     private String fullName;
+
+    private User.Role role;
 }
