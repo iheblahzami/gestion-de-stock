@@ -31,10 +31,17 @@ public class SecurityConfig  {
         // CORS configuration
            http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 // CSRF disabled
-                .csrf(csrf -> csrf.disable())
-                // Authorization configuration
+                   .csrf(csrf -> csrf.disable())
+                   .sessionManagement(session -> session
+                           .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                   )
+
+                   // Authorization configuration
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll() // Public endpoints
+                        .requestMatchers("/auth/**").permitAll() // Allow signup and login
+                        .requestMatchers("/users/me").authenticated() // Only authenticated users can access this
+                        .requestMatchers("/users/**").hasRole("ADMIN") // Only ADMIN can access /users
                         .anyRequest().authenticated() // Other endpoints require authentication
                 )
                 // Session management
