@@ -25,10 +25,13 @@ public class LoginResponse {
         return this; // Return 'this' for method chaining
     }
 
+
     public LoginResponse setExpiresIn(long expiresIn) {
         this.expiresIn = expiresIn;
         return this; // Return 'this' for method chaining
     }
+
+
 
 
 }

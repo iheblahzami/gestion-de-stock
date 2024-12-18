@@ -32,16 +32,14 @@ public class SecurityConfig  {
            http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 // CSRF disabled
                    .csrf(csrf -> csrf.disable())
-                   .sessionManagement(session -> session
-                           .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                   )
+
 
                    // Authorization configuration
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll() // Public endpoints
                         .requestMatchers("/auth/**").permitAll() // Allow signup and login
                         .requestMatchers("/users/me").authenticated() // Only authenticated users can access this
                         .requestMatchers("/users/**").hasRole("ADMIN") // Only ADMIN can access /users
+                        .requestMatchers("/api/**").hasRole("ADMIN")
                         .anyRequest().authenticated() // Other endpoints require authentication
                 )
                 // Session management
@@ -60,8 +58,8 @@ public class SecurityConfig  {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(List.of("http://localhost:8005"));
-        configuration.setAllowedMethods(List.of("GET","POST"));
+        configuration.setAllowedOrigins(List.of("*")); // Allow all origins (only for development)
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH"));
         configuration.setAllowedHeaders(List.of("Authorization","Content-Type"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
